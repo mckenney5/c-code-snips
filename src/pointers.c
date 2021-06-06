@@ -1,3 +1,4 @@
+/* creates a var named example, and a var p that stores the address of example, then displays available info */
 #include <stdio.h>
 int main(){
 	long example = 100;

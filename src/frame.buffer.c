@@ -1,5 +1,7 @@
-/* Writes a pattern to the frame buffer */
-/* Linux only */
+/* Writes a pattern to the frame buffer
+ * Use on a TTY with './a.out <num>'
+ * Linux only 
+ */
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -12,15 +14,21 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]){
-	if(argv[1] == NULL) return 1;
+	if(argv[1] == NULL){
+		fprintf(stderr, "Usage: '%s <number>'\n");
+		return EXIT_FAILURE;
+	}
+
 	int row=0, col=0, width=0, height=0;
 	unsigned int *data = NULL;
 	
 	//open the frame buffer
 	int fd = open("/dev/fb0", O_RDWR);
 
+	if(fd == -1) perror("fd open");
+
 	struct fb_var_screeninfo screeninfo;
-	ioctl(fd, FBIOGET_VSCREENINFO, &screeninfo); //control the screen
+	if(ioctl(fd, FBIOGET_VSCREENINFO, &screeninfo)) perror("ioctl"); //control the screen
 	int bytespp = screeninfo.bits_per_pixel / 8;
 	
 	width = screeninfo.xres;
@@ -35,8 +43,9 @@ int main(int argc, char *argv[]){
 			data[row * width + col] = (unsigned) atoi(argv[1]);
 
 	//clean up
+	usleep(1000000); //sleep for a little bit before fixing the screen
 	munmap(data, width * height * bytespp);
 	close(fd);
-	return 0;
+	return EXIT_SUCCESS;
 }
 

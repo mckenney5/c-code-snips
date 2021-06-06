@@ -4,12 +4,12 @@
 #include <stdlib.h> //used for converting user input to numbers (atoll)
 
 int main(int argc, char *argv[]){
-	long long i;
+	long long i = 0;
 
 	//check if syntax is correct
 	if(argc != 3){
 		fprintf(stderr, "Syntax Error: usage '%s <start> <end>'\n", argv[0]);
-		return -1;
+		return EXIT_FAILURE;
 	}
 
 	//grab values, if the user enters a char, it is changed to zero
@@ -35,7 +35,7 @@ int main(int argc, char *argv[]){
 		for (i; i <= end; i += 2)
 			printf("%lld ", i);
 	}
-	puts("\nDone");
-	return 0;
+	puts(" ");
+	return EXIT_SUCCESS;
 }
 
