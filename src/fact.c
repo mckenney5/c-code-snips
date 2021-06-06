@@ -1,6 +1,7 @@
+/* calculates factorials recursively */
 #include <stdio.h>
 #include <stdlib.h>
-long long factorial(const long num){
+unsigned long long factorial(const unsigned long num){
 /* Factorial is n * (n!-1) */
 	if(num == 0)
 		return 1;
@@ -9,10 +10,12 @@ long long factorial(const long num){
 }
 
 int main(int argc, char *argv[]){
-	if(argc == 2)
-		printf("%s! = %lld\n", argv[1], factorial(atol(argv[1])));
-	else 
-		printf("Usage: %s <number>\n", argv[0]);
-	return 0;
+	if(argc == 2 && atol(argv[1]) >= 0){
+		printf("%s! = %llu\n", argv[1], factorial((unsigned) atol(argv[1])));
+		return EXIT_SUCCESS;
+	} else {
+		printf("Usage: %s <unsigned-number>\n", argv[0]);
+		return EXIT_FAILURE;
+	}
 }
 
